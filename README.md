@@ -44,14 +44,21 @@ http://localhost:8000
 ## Comandos utilizado para desenvolver o projeto (neste ordem)
 
 ```bash
+# Inicialização do projeto
 composer global require laravel/installer
 laravel new spassu-php
 php artisan sail:install
 php artisan key:generate
+
+# Inicialização do repositório
 git init
 git add .
 git commit -m "Commit inicial"
-./vendor/bin/sail artisan migrate
+git remote add origin https://github.com/terraze/spassu.git
+git push -u origin master
+
+# Após criar as migrações e seeders
+./vendor/bin/sail artisan migrate -seed
 ```
 
 ## Licença
