@@ -7,16 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class Assunto extends Model
 {
     /**
+     * Define o nome da tabela associada ao modelo     
+     * @var string
+     */
+    protected $table = 'Assunto';
+
+    /**
      * Define o nome da chave primária da tabela
      * @var string
      */
     protected $primaryKey = 'CodAs';
 
     /**
-     * Define o nome da tabela associada ao modelo     
+     * Define o tipo da chave primária
      * @var string
      */
-     protected $table = 'Assunto';
+    public $keyType = 'integer';
+
+    /**
+     * Define o autoincremento da chave primária
+     * @var bool
+     */
+    public $autoincrement = true;
 
      /**
      * Não criar campos para created_at e updated_at

@@ -13,13 +13,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('Assunto', function (Blueprint $table) {
-            $table->id('CodAs');
-            $table->string('Descricao');
+            $table->increments('CodAs');
+            $table->string('Descricao', 20);
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverter as migrações
      */
     public function down(): void
     {
