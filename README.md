@@ -4,7 +4,7 @@
 <b>Candidato:</b> José Ricardo Junior</p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://github.com/terraze/spassu/actions"><img src="https://github.com/terraze/spassu/actions/workflows/laravel.yml/badge.svg?branch=master" alt="Build Status"></a>
 </p>
 
 ## Requisitos
