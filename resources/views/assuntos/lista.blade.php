@@ -16,20 +16,6 @@
         ['label' => 'Ações', 'field' => null]
     ]
 ])
-    @slot('row_template')
-        <tr>
-            <td>@{{ CodAs }}</td>
-            <td>@{{ Descricao }}</td>
-            <td>
-                <button class="btn btn-sm btn-primary" onclick="editarAssunto(@{{ CodAs }})">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-danger" onclick="excluirAssunto(@{{ CodAs }})">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        </tr>
-    @endslot
 @endcomponent
 
 @push('scripts')
@@ -40,8 +26,20 @@ document.addEventListener('DOMContentLoaded', function() {
         apiUrl: '/api/assuntos',
         sortField: 'CodAs',
         rowTemplate: (assunto) => {
-            const template = document.querySelector('#assuntos-table-row-template').innerHTML;
-            return template.replace(/@{{(.*?)}}/g, (match, key) => assunto[key.trim()]);
+            return `
+                <tr>
+                    <td>${assunto.CodAs}</td>
+                    <td>${assunto.Descricao}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editarAssunto(${assunto.CodAs})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="excluirAssunto(${assunto.CodAs})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
         }
     });
 });
@@ -55,12 +53,13 @@ function excluirAssunto(id) {
         axios.delete(`/api/assuntos/${id}`)
             .then(response => {
                 if (response.status === 200) {
+                    Toast.show('Assunto excluído com sucesso!', 'success');
                     location.reload();
                 }
             })
             .catch(error => {
                 console.error('Erro ao excluir assunto:', error);
-                alert('Erro ao excluir o assunto.');
+                Toast.show('Erro ao excluir o assunto.', 'error');
             });
     }
 }
