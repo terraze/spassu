@@ -57,4 +57,16 @@ class Livro extends Model
         return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'Livro_CodL', 'Assunto_codAs')
                     ->using(Livro_Assunto::class);
     }
+
+    
+
+    /**
+     * Define a relação com o Autor (N:N - um livro pode ter vários autores)
+     * @return BelongsToMany
+     */
+    public function autores(): BelongsToMany
+    {
+        return $this->belongsToMany(Autor::class, 'Livro_Autor', 'Livro_CodL', 'Autor_CodAu')
+                    ->using(Livro_Autor::class);
+    }
 }

@@ -62,6 +62,7 @@ git push -u origin master
 ./vendor/bin/sail artisan make:model Autor -mcs
 ./vendor/bin/sail artisan make:model Livro -mcs
 ./vendor/bin/sail artisan make:model Livro_Assunto -msp
+./vendor/bin/sail artisan make:model Livro_Autor -msp
 
 # Após criar as migrações e seeders
 ./vendor/bin/sail artisan migrate -seed
@@ -70,6 +71,7 @@ git push -u origin master
 ## Alterações realizados no SQL
 - Corrigido nome da chave primária de Assunto de codAs para CodAs para manter o padrão CamelCase.
 - Corrigido nome da chave estrangeira de Livro_Assunto de Assunto_codAs para Assunto_CodAs para manter o padrão CamelCase.
+- Corrigido nome da chave primária de Livro de Codl para CodL (e suas referências em chaves estrangeiras) para manter o padrão CamelCase.
 - Todas as chaves estão usando Unsigned Integer ao invés de Integer, já que não existe ID negativo.
 
 ## Licença

@@ -12,13 +12,13 @@ class AutorSeeder extends Seeder
     public function run(): void
     {
         Autor::create([
-            'Nome' => 'Clarice',
+            'Nome' => 'Médico',
         ]);
         Autor::create([
-            'Nome' => 'Machado',
+            'Nome' => 'Economista',
         ]);
         Autor::create([
-            'Nome' => 'Jorge',
+            'Nome' => 'Programador',
         ]);
     }
 }

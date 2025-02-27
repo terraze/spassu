@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Autor extends Model
 {
@@ -43,4 +44,14 @@ class Autor extends Model
     protected $fillable = [
         'Nome',        
     ];
+
+    /**
+     * Define a relação com o Autor (N:N - um autor pode ter vários livros)
+     * @return BelongsToMany
+    */
+    public function livros(): BelongsToMany
+    {
+        return $this->belongsToMany(Livro::class, 'Livro_Autor', 'Autor_CodAu', 'Livro_CodL')
+                    ->using(Livro_Autor::class);
+    }
 }

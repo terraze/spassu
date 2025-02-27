@@ -36,6 +36,14 @@ class LivroAssuntoSeeder extends Seeder
             'CodL' => 4,  // "Um livro qualquer"
             'CodAs' => 2,
         ]);
+        Livro_Assunto::create([
+            'CodL' => 8,  // "Livro de Saúde e Tecnologia"
+            'CodAs' => 1,
+        ]);
+        Livro_Assunto::create([
+            'CodL' => 8,  // "Livro de Saúde e Tecnologia"
+            'CodAs' => 2,
+        ]);
 
         // Assunto: "Economia" (CodAs: 3)
         // ----------------------------------

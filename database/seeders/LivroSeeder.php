@@ -59,5 +59,13 @@ class LivroSeeder extends Seeder
             'Edicao' => 1,
             'AnoPublicacao' => '2024',
         ]);
+
+        // Livro multi-autor
+        Livro::create([
+            'Titulo' => 'Livro de Saúde e Tecnologia',
+            'Editora' => 'MedTechBooks',
+            'Edicao' => 1,
+            'AnoPublicacao' => '2020',
+        ]);
     }
 }
