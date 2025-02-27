@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Livro extends Model
@@ -19,7 +17,7 @@ class Livro extends Model
      * Define o nome da chave primária da tabela
      * @var string
      */
-    protected $primaryKey = 'CodI';
+    protected $primaryKey = 'CodL';
 
      /**
      * Define o tipo da chave primária
@@ -56,7 +54,7 @@ class Livro extends Model
      */
     public function assuntos(): BelongsToMany
     {
-        return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'Livro_CodI', 'Assunto_codAs')
+        return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'Livro_CodL', 'Assunto_codAs')
                     ->using(Livro_Assunto::class);
     }
 }

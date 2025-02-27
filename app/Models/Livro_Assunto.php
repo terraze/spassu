@@ -21,5 +21,5 @@ class Livro_Assunto extends Pivot
     /**
      * Define os campos que podem ser atribuídos em massa
      */
-    protected $fillable = ['Livro_CodI', 'Assunto_codAs'];
+    protected $fillable = ['CodL', 'CodAs'];
 }
