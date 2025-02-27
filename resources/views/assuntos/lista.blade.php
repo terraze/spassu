@@ -16,90 +16,36 @@
         ['label' => 'Ações', 'field' => null]
     ]
 ])
+    @slot('row_template')
+        <tr>
+            <td>@{{ CodAs }}</td>
+            <td>@{{ Descricao }}</td>
+            <td>
+                <button class="btn btn-sm btn-primary" onclick="editarAssunto(@{{ CodAs }})">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="excluirAssunto(@{{ CodAs }})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+    @endslot
 @endcomponent
 
 @push('scripts')
+<script src="{{ asset('js/data-table.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const tableBody = document.querySelector('#assuntos-table');
-    let currentSort = { field: 'CodAs', direction: 'asc' };
-
-    // Function to load and display data
-    async function loadAssuntos() {
-        try {
-            const response = await axios.get('/api/assuntos');
-            console.log('Response:', response.data);
-
-            if (response.status === 200) {
-                let assuntos = response.data;
-                console.log('Assuntos:', assuntos);
-                
-                // Sort data
-                assuntos.sort((a, b) => {
-                    const aValue = a[currentSort.field];
-                    const bValue = b[currentSort.field];
-                    return currentSort.direction === 'asc' 
-                        ? (aValue > bValue ? 1 : -1)
-                        : (aValue < bValue ? 1 : -1);
-                });
-
-                // Render table
-                if (tableBody) {
-                    console.log('Table body found');
-                    tableBody.innerHTML = assuntos.map(assunto => `
-                        <tr>
-                            <td>${assunto.CodAs}</td>
-                            <td>${assunto.Descricao}</td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" onclick="editarAssunto(${assunto.CodAs})">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger" onclick="excluirAssunto(${assunto.CodAs})">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
-                } else {
-                    console.error('Table body not found!');
-                }
-            }
-        } catch (error) {
-            console.error('Erro ao carregar assuntos:', error);
-            alert('Erro ao carregar a lista de assuntos.');
+    const table = new DataTable('assuntos-table', {
+        apiUrl: '/api/assuntos',
+        sortField: 'CodAs',
+        rowTemplate: (assunto) => {
+            const template = document.querySelector('#assuntos-table-row-template').innerHTML;
+            return template.replace(/@{{(.*?)}}/g, (match, key) => assunto[key.trim()]);
         }
-    }
-
-    // Handle sorting
-    document.querySelectorAll('th.sortable').forEach(header => {
-        header.addEventListener('click', function() {
-            const field = this.dataset.sort;
-            if (!field) return;
-
-            // Update sort direction
-            if (currentSort.field === field) {
-                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
-            } else {
-                currentSort.field = field;
-                currentSort.direction = 'asc';
-            }
-
-            // Update sort icons
-            document.querySelectorAll('th.sortable').forEach(th => {
-                th.classList.remove('asc', 'desc');
-            });
-            this.classList.add(currentSort.direction);
-
-            // Reload data with new sorting
-            loadAssuntos();
-        });
     });
-
-    // Initial load
-    loadAssuntos();
 });
 
-// Placeholder functions for edit and delete
 function editarAssunto(id) {
     window.location.href = `/assuntos/cadastro/${id}`;
 }
@@ -108,7 +54,7 @@ function excluirAssunto(id) {
     if (confirm('Tem certeza que deseja excluir este assunto?')) {
         axios.delete(`/api/assuntos/${id}`)
             .then(response => {
-                if (response.data.success) {
+                if (response.status === 200) {
                     location.reload();
                 }
             })

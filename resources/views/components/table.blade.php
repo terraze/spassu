@@ -1,11 +1,13 @@
-<div class="table-responsive">
+<div id="{{ $tableId }}-wrapper" class="table-responsive">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
                 @foreach($headers as $header)
-                    <th scope="col" class="sortable" data-sort="{{ $header['field'] ?? '' }}">
+                    <th scope="col" @if($header['field']) class="sortable" data-sort="{{ $header['field'] }}" @endif>
                         {{ $header['label'] }}
-                        <i class="bi bi-arrow-down-up sort-icon"></i>
+                        @if($header['field'])
+                            <i class="bi bi-arrow-down-up sort-icon"></i>
+                        @endif
                     </th>
                 @endforeach
             </tr>
@@ -15,6 +17,12 @@
         </tbody>
     </table>
 </div>
+
+@if(isset($row_template))
+    <template id="{{ $tableId }}-row-template">
+        {{ $row_template }}
+    </template>
+@endif
 
 <style>
 .sortable {
