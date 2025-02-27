@@ -15,8 +15,8 @@ class DataTable {
 
         // Armazena o estado atual da ordenação
         this.currentSort = {
-            field: this.options.sortField,      // Campo atual de ordenação
-            direction: this.options.sortDirection // Direção atual (asc/desc)
+            field: this.options.sortField,                      // Campo atual de ordenação
+            direction: this.options.sortDirection               // Direção atual (asc/desc)
         };
 
         // Inicia a configuração da tabela
@@ -34,7 +34,7 @@ class DataTable {
         try {
             // Build URL with sort parameters
             const url = new URL(this.options.apiUrl, window.location.origin);
-            url.searchParams.append('ordenarCampo', 'aa');
+            url.searchParams.append('ordenarCampo', this.currentSort.field);
             url.searchParams.append('ordenarDirecao', this.currentSort.direction);
 
             const response = await axios.get(url.toString());
