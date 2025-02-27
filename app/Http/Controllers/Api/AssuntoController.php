@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class AssuntoController extends Controller
 {
+    /**
+     * Retorna todos os assuntos
+     */
     public function index()
     {
         return response()->json(Assunto::all());
