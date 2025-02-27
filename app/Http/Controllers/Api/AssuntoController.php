@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AssuntoController extends Controller
 {
-    public function indexa()
+    public function index()
     {
         return response()->json(Assunto::all());
     }
