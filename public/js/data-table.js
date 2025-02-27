@@ -94,6 +94,7 @@ class DataTable {
         // Re-adiciona a classe asc ou desc à coluna clicada
         header.classList.add(this.currentSort.direction);
 
+        // Recarrega os dados
         this.loadData();
     }
 } 

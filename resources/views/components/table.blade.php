@@ -33,9 +33,9 @@
     margin-left: 5px;
 }
 th[data-sort].asc .sort-icon::before {
-    content: "\F12C"; /* Bootstrap Icons: arrow-down */
+    content: "\F146"; /* Bootstrap Icons: arrow-up */
 }
 th[data-sort].desc .sort-icon::before {
-    content: "\F12B"; /* Bootstrap Icons: arrow-up */
+    content: "\F125"; /* Bootstrap Icons: arrow-down */
 }
 </style> 
