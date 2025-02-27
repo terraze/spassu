@@ -32,26 +32,19 @@ class DataTable {
     // Carrega os dados da API
     async loadData() {
         try {
-            const response = await axios.get(this.options.apiUrl);
+            // Build URL with sort parameters
+            const url = new URL(this.options.apiUrl, window.location.origin);
+            url.searchParams.append('ordenarCampo', this.currentSort.field);
+            url.searchParams.append('ordenarDirecao', this.currentSort.direction);
+
+            const response = await axios.get(url.toString());
             if (response.status === 200) {
-                const data = this.sortData(response.data);
-                this.renderData(data);
+                this.renderData(response.data);
             }
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
             alert('Erro ao carregar os dados.');
         }
-    }
-
-    // Aplica ordenação nos dados com base na coluna e direção atual
-    sortData(data) {
-        return data.sort((a, b) => {
-            const aValue = a[this.currentSort.field];
-            const bValue = b[this.currentSort.field];
-            return this.currentSort.direction === 'asc' 
-                ? (aValue > bValue ? 1 : -1)
-                : (aValue < bValue ? 1 : -1);
-        });
     }
 
     // Renderiza as linhas da tabela
