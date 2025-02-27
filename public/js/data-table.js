@@ -34,7 +34,7 @@ class DataTable {
         try {
             // Build URL with sort parameters
             const url = new URL(this.options.apiUrl, window.location.origin);
-            url.searchParams.append('ordenarCampo', this.currentSort.field);
+            url.searchParams.append('ordenarCampo', 'aa');
             url.searchParams.append('ordenarDirecao', this.currentSort.direction);
 
             const response = await axios.get(url.toString());
@@ -43,14 +43,14 @@ class DataTable {
             }
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
-            alert('Erro ao carregar os dados.');
+            Toast.show('Erro ao carregar os dados.', 'error');
         }
     }
 
     // Renderiza as linhas da tabela
     renderData(data) {
         if (!this.tableBody) {
-            console.error('Table body not found!');
+            Toast.show('Erro ao iniciar página.', 'error');
             return;
         }
 
