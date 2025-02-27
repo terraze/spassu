@@ -4,7 +4,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Helpers\ApiResponseHelper;
-use Error;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Add JsonResponseMiddleware to API middleware group
+        // Adiciona JsonResponseMiddleware ao grupo de middleware API
         $middleware->api([
             \App\Http\Middleware\JsonResponseMiddleware::class,
         ]);
