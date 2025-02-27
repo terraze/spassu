@@ -8,6 +8,11 @@ class LivroController extends Controller
 {
     public function index()
     {
-        return view('livros');
+        return view('livros.lista');
+    }
+
+    public function cadastro()
+    {
+        return view('livros.cadastro');
     }
 }
