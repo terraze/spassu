@@ -18,3 +18,7 @@ Route::get('/assuntos', [AssuntoController::class, 'index'])->name('assuntos.ind
 Route::get('/livros/cadastro/{id?}', [LivroController::class, 'cadastro'])->name('livros.cadastro');
 Route::get('/autores/cadastro/{id?}', [AutorController::class, 'cadastro'])->name('autores.cadastro');
 Route::get('/assuntos/cadastro/{id?}', [AssuntoController::class, 'cadastro'])->name('assuntos.cadastro');
+
+Route::get('/relatorios', function () {
+    return view('relatorios');
+})->name('relatorios');

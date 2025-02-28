@@ -51,5 +51,11 @@
             </div>
         </div>
     </div>
+
+    <div class="text-center mt-5">
+        <a href="{{ route('relatorios') }}" class="btn btn-lg btn-outline-primary">
+            <i class="bi bi-file-earmark-bar-graph"></i> Acessar Relatórios
+        </a>
+    </div>
 </div>
 @endsection
