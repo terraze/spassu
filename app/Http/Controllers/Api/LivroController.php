@@ -7,6 +7,7 @@ use App\Http\Requests\Api\ListaLivroRequest;
 use App\Http\Requests\Api\SalvarLivroRequest;
 use App\Models\Livro;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
 
 class LivroController extends Controller
 {
@@ -15,14 +16,21 @@ class LivroController extends Controller
      * @param ListaLivroRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(ListaLivroRequest $request)
+    public function index(ListaLivroRequest $request): JsonResponse
     {    
         // Obter parâmetros de ordenação ou usar valores padrão
         $sortField = $request->input('ordenarCampo', 'CodL');
         $sortDirection = $request->input('ordenarDirecao', 'asc');
 
         // Obter dados ordenados
-        $livros = Livro::orderBy($sortField, $sortDirection)->get();
+        $livros = Livro::with(['assuntos', 'autores'])
+            ->orderBy($sortField, $sortDirection)
+            ->get()
+            ->map(function($livro) {
+                $livro->TodosAssuntos = $livro->assuntos->pluck('Descricao')->sort()->join(', ');
+                $livro->TodosAutores = $livro->autores->pluck('Nome')->sort()->join(', ');
+                return $livro;
+            });
 
         return response()->json($livros);
     }

@@ -17,6 +17,8 @@
         ['label' => 'Edição', 'field' => 'Edicao'],
         ['label' => 'Ano', 'field' => 'AnoPublicacao'],
         ['label' => 'Preço', 'field' => 'Preco'],
+        ['label' => 'Autores', 'field' => null],
+        ['label' => 'Assuntos', 'field' => null],        
         ['label' => 'Ações', 'field' => null]
     ]
 ])
@@ -41,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${livro.Edicao}</td>
                     <td>${livro.AnoPublicacao}</td>
                     <td>R$ ${Number(livro.Preco).toFixed(2)}</td>
+                    <td>${livro.TodosAutores || '-'}</td>
+                    <td>${livro.TodosAssuntos || '-'}</td>                    
                     <td>
                         <button class="btn btn-sm btn-primary" onclick="tableHandler.edit(${livro.CodL})">
                             <i class="bi bi-pencil"></i>

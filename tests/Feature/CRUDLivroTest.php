@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use App\Models\Livro;
+use App\Models\Assunto;
+use App\Models\Autor;
+
 class CRUDLivroTest extends TestCase
 {
     use DatabaseMigrations;
@@ -32,7 +35,9 @@ class CRUDLivroTest extends TestCase
                 'AnoPublicacao',
                 'Editora',
                 'Edicao',
-                'Preco'
+                'Preco',
+                'TodosAssuntos',
+                'TodosAutores'
             ]
         ]);
     }    
@@ -667,5 +672,65 @@ class CRUDLivroTest extends TestCase
                     'Preco' => ['O preço deve ser maior ou igual a zero']
                 ]
             ]);
+    }
+
+    /**
+     * Testa a agregação de assuntos de um livro
+     */
+    public function test_agregar_assuntos(): void
+    {
+        // Pega o livro "Um livro qualquer"
+        $livro = Livro::where('Titulo', 'Um livro qualquer')->first();
+        
+        // Verifica assuntos iniciais
+        $response = $this->getJson('/api/livros');
+        $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
+        $this->assertEquals('Saúde, Tecnologia', $livroResponse['TodosAssuntos']);
+        
+        // Adiciona novo assunto (Economia)
+        $livro->assuntos()->attach(3);
+        
+        // Verifica se Economia foi adicionado
+        $response = $this->getJson('/api/livros');
+        $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
+        $this->assertEquals('Economia, Saúde, Tecnologia', $livroResponse['TodosAssuntos']);
+        
+        // Remove todos os assuntos
+        $livro->assuntos()->detach();
+        
+        // Verifica se ficou vazio
+        $response = $this->getJson('/api/livros');
+        $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
+        $this->assertEquals('-', $livroResponse['TodosAssuntos']);
+    }
+
+    /**
+     * Testa a agregação de autores de um livro
+     */
+    public function test_agregar_autores(): void
+    {
+        // Pega o livro "Um livro qualquer"
+        $livro = Livro::where('Titulo', 'Um livro qualquer')->first();
+        
+        // Verifica autor inicial
+        $response = $this->getJson('/api/livros');
+        $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
+        $this->assertEquals('Médico', $livroResponse['TodosAutores']);
+        
+        // Adiciona novo autor (Economista)
+        $livro->autores()->attach(2);
+        
+        // Verifica se Economista foi adicionado
+        $response = $this->getJson('/api/livros');
+        $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
+        $this->assertEquals('Economista, Médico', $livroResponse['TodosAutores']);
+        
+        // Remove todos os autores
+        $livro->autores()->detach();
+        
+        // Verifica se ficou vazio
+        $response = $this->getJson('/api/livros');
+        $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
+        $this->assertEquals('-', $livroResponse['TodosAutores']);
     }
 } 
