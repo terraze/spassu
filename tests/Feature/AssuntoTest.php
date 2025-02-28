@@ -2,22 +2,28 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Assunto;
+use App\Models\Livro;
+use App\Models\Livro_Assunto;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Database\Seeders\AssuntoSeeder;
+use Database\Seeders\LivroSeeder;
+use Database\Seeders\LivroAssuntoSeeder;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+
 class AssuntoTest extends TestCase
 {
 
     /**
      * Reinicia banco de dados antes de executar os testes desta classe
      */
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(AssuntoSeeder::class);
+        $this->seed();
     }
 
     /**
@@ -72,7 +78,7 @@ class AssuntoTest extends TestCase
         if (!$assunto) {
             $assunto = \App\Models\Assunto::first();
             DB::table('Livro_Assunto')->insert([
-                'CodLi' => 1,
+                'CodL' => 1,
                 'CodAs' => $assunto->CodAs
             ]);
         }
