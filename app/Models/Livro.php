@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
 class Livro extends Model
 {
@@ -54,7 +55,7 @@ class Livro extends Model
      */
     public function assuntos(): BelongsToMany
     {
-        return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'Livro_CodL', 'Assunto_codAs')
+        return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'Livro_CodL', 'Assunto_CodAs')
                     ->using(Livro_Assunto::class);
     }
 
@@ -68,5 +69,25 @@ class Livro extends Model
     {
         return $this->belongsToMany(Autor::class, 'Livro_Autor', 'Livro_CodL', 'Autor_CodAu')
                     ->using(Livro_Autor::class);
+    }
+
+    /**
+     * Remove todas as associações deste livro com autores
+     */
+    public function removerAssociacoesAutores()
+    {
+        return DB::table('Livro_Autor')
+            ->where('CodL', $this->CodL)
+            ->delete();
+    }
+
+    /**
+     * Remove todas as associações deste livro com assuntos
+     */
+    public function removerAssociacoesAssuntos()
+    {
+        return DB::table('Livro_Assunto')
+            ->where('CodL', $this->CodL)
+            ->delete();
     }
 }
