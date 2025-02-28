@@ -32,6 +32,10 @@
         @include('components.toast')
         @include('components.loading-overlay')
 
+        <!-- Scripts -->
+        <script src="{{ asset('js/data-table.js') }}"></script>
+        <script src="{{ asset('js/form-handler.js') }}"></script>
+        <script src="{{ asset('js/table-handler.js') }}"></script>
         @stack('scripts')
     </body>
 </html>

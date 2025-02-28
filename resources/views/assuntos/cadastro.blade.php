@@ -38,48 +38,11 @@
 
 @push('scripts')
 <script>
-document.getElementById('form-assunto').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-    
-    LoadingOverlay.show();
-    
-    const method = data.CodAs ? 'PUT' : 'POST';
-    const url = data.CodAs ? `/api/assuntos/${data.CodAs}` : '/api/assuntos';
-    
-    axios({
-        method,
-        url,
-        data
-    })
-    .then(response => {
-        Toast.show('Assunto salvo com sucesso!', 'success');
-        window.location.href = '{{ route("assuntos.index") }}';
-    })
-    .catch(error => {
-        console.error('Erro ao salvar assunto:', error);
-        
-        if (error.response?.status === 400) {
-            const errors = error.response.data.errors;
-            Object.keys(errors).forEach(field => {
-                const input = document.getElementById(field);
-                if (input) {
-                    input.classList.add('is-invalid');
-                    const feedback = input.nextElementSibling;
-                    if (feedback && feedback.classList.contains('invalid-feedback')) {
-                        feedback.textContent = errors[field][0];
-                    }
-                }
-            });
-        } else {
-            Toast.show('Erro ao salvar assunto. Tente novamente.', 'error');
-        }
-    })
-    .finally(() => {
-        LoadingOverlay.hide();
-    });
+new FormHandler({
+    formId: 'form-assunto',
+    apiUrl: '/api/assuntos',
+    idField: 'CodAs',
+    successRedirect: '{{ route("assuntos.index") }}'
 });
 </script>
 @endpush

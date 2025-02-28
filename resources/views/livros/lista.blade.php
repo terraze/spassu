@@ -23,14 +23,15 @@
 @endcomponent
 
 @push('scripts')
-<script src="{{ asset('js/data-table.js') }}"></script>
 <script>
-let dataTable;
-
 document.addEventListener('DOMContentLoaded', function() {
-    dataTable = new DataTable('livros-table', {
+    window.tableHandler = new TableHandler({
+        tableId: 'livros-table',
         apiUrl: '/api/livros',
-        sortField: 'CodL',
+        resourceName: 'Livro',
+        idField: 'CodL',
+        displayField: 'Titulo',
+        editRoute: '/livros/cadastro',
         rowTemplate: (livro) => {
             return `
                 <tr>
@@ -41,10 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${livro.AnoPublicacao}</td>
                     <td>R$ ${Number(livro.Preco).toFixed(2)}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="editarLivro(${livro.CodL})">
+                        <button class="btn btn-sm btn-primary" onclick="tableHandler.edit(${livro.CodL})">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="excluirLivro(${livro.CodL}, '${livro.Titulo}')">
+                        <button class="btn btn-sm btn-danger" onclick="tableHandler.delete(${livro.CodL}, '${livro.Titulo}')">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>
@@ -53,34 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-function editarLivro(id) {
-    window.location.href = `/livros/cadastro/${id}`;
-}
-
-function excluirLivro(id, titulo) {
-    if (confirm(`Tem certeza que deseja excluir o livro "${titulo}"?`)) {
-        axios.delete(`/api/livros/${id}`)
-            .then(response => {
-                if (response.status === 200) {
-                    Toast.show('Livro excluído com sucesso!', 'success');
-                    dataTable.loadData();
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao excluir livro:', error);
-                let mensagem = 'Erro ao excluir o livro.';
-                
-                if (error.response?.status === 404) {
-                    mensagem = 'Livro não encontrado.';
-                } else if (error.response?.data?.message) {
-                    mensagem = error.response.data.message;
-                }
-                
-                Toast.show(mensagem, 'error');
-            });
-    }
-}
 </script>
 @endpush
 @endsection
