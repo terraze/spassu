@@ -35,7 +35,24 @@ class AssuntoTest extends TestCase
                 'Descricao'
             ]
         ]);
-    }    
+    }
+
+    /**
+     * Testa se os assuntos são ordenados por código decrescente
+     */
+    public function test_assuntos_ordenados_por_codigo_decrescente(): void
+    {
+        $response = $this->get('/api/assuntos?ordenarCampo=CodAs&ordenarDirecao=desc');
+        $response->assertStatus(200);
+
+        $response->assertJsonCount(3);
+        
+        $data = $response->json();
+        
+        $this->assertEquals(3, $data[0]['CodAs']);
+        $this->assertEquals(2, $data[1]['CodAs']);
+        $this->assertEquals(1, $data[2]['CodAs']);
+    }
 
     /**
      * Testa se os assuntos são ordenados por descrição crescente

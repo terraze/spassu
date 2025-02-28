@@ -34,7 +34,24 @@ class AutorTest extends TestCase
                 'Nome',
             ]
         ]);
-    }    
+    }
+
+    /**
+     * Testa se os autores são ordenados por código decrescente
+     */
+    public function test_autores_ordenados_por_codigo_decrescente(): void
+    {
+        $response = $this->get('/api/autores?ordenarCampo=CodAu&ordenarDirecao=desc');
+        $response->assertStatus(200);
+
+        $response->assertJsonCount(3);
+        
+        $data = $response->json();
+        
+        $this->assertEquals(3, $data[0]['CodAu']);
+        $this->assertEquals(2, $data[1]['CodAu']);
+        $this->assertEquals(1, $data[2]['CodAu']);
+    }
 
     /**
      * Testa se os autores são ordenados por nome crescente
