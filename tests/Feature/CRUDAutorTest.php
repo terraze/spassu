@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 
-class AutorTest extends TestCase
+class CRUDAutorTest extends TestCase
 {
     /**
      * Reinicia banco de dados antes de executar os testes desta classe
