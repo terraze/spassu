@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Livro;
 class CRUDLivroTest extends TestCase
 {
     use DatabaseMigrations;
@@ -212,4 +212,460 @@ class CRUDLivroTest extends TestCase
             'message' => 'Livro não encontrado'
         ]);
     }    
+
+    /**
+     * Testa a criação de um livro com sucesso
+     */
+    public function test_livro_criado_com_sucesso(): void
+    {
+        $data = [
+            'Titulo' => 'Novo Livro',
+            'Editora' => 'Nova Editora',
+            'Edicao' => 1,
+            'AnoPublicacao' => date('Y'),
+            'Preco' => 99.90,
+            'Autores' => [1, 2],
+            'Assuntos' => [1, 2]
+        ];
+
+        $response = $this->post('/api/livros', $data);
+
+        $response->assertStatus(201)
+            ->assertJson([
+                'message' => 'Livro criado com sucesso'
+            ]);
+
+        // Verifica se o livro foi criado no banco
+        $this->assertDatabaseHas('Livro', [
+            'Titulo' => 'Novo Livro',
+            'Editora' => 'Nova Editora',
+            'Edicao' => 1,
+            'AnoPublicacao' => date('Y'),
+            'Preco' => 99.90
+        ]);
+
+        // Pega o ID do livro criado
+        $livro = \App\Models\Livro::where('Titulo', 'Novo Livro')->first();
+
+        // Verifica as relações
+        $this->assertDatabaseHas('Livro_Autor', [
+            'CodL' => $livro->CodL,
+            'CodAu' => 1
+        ]);
+        $this->assertDatabaseHas('Livro_Autor', [
+            'CodL' => $livro->CodL,
+            'CodAu' => 2
+        ]);
+        $this->assertDatabaseHas('Livro_Assunto', [
+            'CodL' => $livro->CodL,
+            'CodAs' => 1
+        ]);
+        $this->assertDatabaseHas('Livro_Assunto', [
+            'CodL' => $livro->CodL,
+            'CodAs' => 2
+        ]);
+    }
+
+    /**
+     * Testa a atualização completa de um livro com sucesso
+     */
+    public function test_livro_atualizado_com_sucesso(): void
+    {
+        $livro = \App\Models\Livro::first();
+
+        $data = [
+            'Titulo' => 'Livro Atualizado',
+            'Editora' => 'Editora Atualizada',
+            'Edicao' => 2,
+            'AnoPublicacao' => date('Y'),
+            'Preco' => 199.90,
+            'Autores' => [1, 2],
+            'Assuntos' => [1, 2]
+        ];
+
+        $response = $this->put("/api/livros/{$livro->CodL}", $data);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Livro atualizado com sucesso'
+            ]);
+
+        // Verifica se o livro foi atualizado
+        $this->assertDatabaseHas('Livro', [
+            'CodL' => $livro->CodL,
+            'Titulo' => 'Livro Atualizado',
+            'Editora' => 'Editora Atualizada',
+            'Edicao' => 2,
+            'AnoPublicacao' => date('Y'),
+            'Preco' => 199.90
+        ]);
+
+        // Verifica as relações
+        $this->assertDatabaseHas('Livro_Autor', [
+            'CodL' => $livro->CodL,
+            'CodAu' => 1
+        ]);
+        $this->assertDatabaseHas('Livro_Autor', [
+            'CodL' => $livro->CodL,
+            'CodAu' => 2
+        ]);
+        $this->assertDatabaseHas('Livro_Assunto', [
+            'CodL' => $livro->CodL,
+            'CodAs' => 1
+        ]);
+        $this->assertDatabaseHas('Livro_Assunto', [
+            'CodL' => $livro->CodL,
+            'CodAs' => 2
+        ]);
+    }
+
+    /**
+     * Testa erro ao tentar atualizar livro inexistente
+     */
+    public function test_404_ao_atualizar_livro_inexistente(): void
+    {
+        $data = [
+            'Titulo' => 'Livro Atualizado',
+            'Editora' => 'Editora Atualizada',
+            'Edicao' => 2,
+            'AnoPublicacao' => date('Y'),
+            'Preco' => 199.90,
+            'Autores' => [1],
+            'Assuntos' => [1]
+        ];
+
+        $response = $this->put('/api/livros/999', $data);
+
+        $response->assertStatus(404)
+            ->assertJson([
+                'message' => 'Livro não encontrado'
+            ]);
+    }
+
+    /**
+     * Testa validação do título do livro
+     */
+    public function test_validacao_titulo(): void
+    {
+        $livro = \App\Models\Livro::first();
+
+        // Título vazio
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => '',
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Titulo']);
+
+        $response->assertJson([
+            'errors' => [
+                'Titulo' => ['O título é obrigatório']
+            ]
+        ]);
+
+        // Título muito longo
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => str_repeat('a', Livro::MAX_TITULO_LENGTH + 1),
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Titulo']);
+
+        $response->assertJson([
+            'errors' => [
+                'Titulo' => ['O título não pode ter mais que ' . Livro::MAX_TITULO_LENGTH . ' caracteres']
+            ]
+        ]);
+    }
+
+    /**
+     * Testa validação da editora do livro
+     */
+    public function test_validacao_editora(): void
+    {
+        $livro = \App\Models\Livro::first();
+
+        // Editora vazia
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => '',
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Editora']);
+
+        // Editora muito longa
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => str_repeat('a', Livro::MAX_EDITORA_LENGTH + 1),
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Editora']);
+
+        $response->assertJson([
+            'errors' => [
+                'Editora' => ['O nome da editora não pode ter mais que ' . Livro::MAX_EDITORA_LENGTH . ' caracteres']
+            ]
+        ]);
+    }
+
+    /**
+     * Testa validação da edição do livro
+     */
+    public function test_validacao_edicao(): void
+    {
+        $livro = \App\Models\Livro::first();
+
+        // Edição vazia
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => '',
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Edicao'])
+            ->assertJson([
+                'errors' => [
+                    'Edicao' => ['A edição é obrigatória']
+                ]
+            ]);
+
+        // Edição não numérica
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => 'abc',
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Edicao'])
+            ->assertJson([
+                'errors' => [
+                    'Edicao' => ['A edição deve ser um número inteiro']
+                ]
+            ]);
+
+        // Edição decimal
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => 1.5,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Edicao'])
+            ->assertJson([
+                'errors' => [
+                    'Edicao' => ['A edição deve ser um número inteiro']
+                ]
+            ]);
+
+        // Edição menor que 1
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => 0,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Edicao'])
+            ->assertJson([
+                'errors' => [
+                    'Edicao' => ['A edição deve ser maior que zero']
+                ]
+            ]);
+    }
+
+    /**
+     * Testa validação do ano de publicação do livro
+     */
+    public function test_validacao_ano_publicacao(): void
+    {
+        $livro = \App\Models\Livro::first();
+
+        // Ano vazio
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => '',
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['AnoPublicacao'])
+            ->assertJson([
+                'errors' => [
+                    'AnoPublicacao' => ['O ano de publicação é obrigatório']
+                ]
+            ]);
+
+        // Ano não numérico
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => 'abc',
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['AnoPublicacao'])
+            ->assertJson([
+                'errors' => [
+                    'AnoPublicacao' => ['O ano de publicação deve ser um número inteiro']
+                ]
+            ]);
+
+        // Ano decimal
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => 2023.5,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['AnoPublicacao'])
+            ->assertJson([
+                'errors' => [
+                    'AnoPublicacao' => ['O ano de publicação deve ser um número inteiro']
+                ]
+            ]);
+
+        // Ano menor que 1900
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => Livro::MIN_ANO_PUBLICACAO - 1,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['AnoPublicacao'])
+            ->assertJson([
+                'errors' => [
+                    'AnoPublicacao' => ['O ano de publicação deve ser maior ou igual a ' . Livro::MIN_ANO_PUBLICACAO]
+                ]
+            ]);
+
+        // Ano maior que o atual
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => date('Y') + 1,
+            'Preco' => $livro->Preco
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['AnoPublicacao'])
+            ->assertJson([
+                'errors' => [
+                    'AnoPublicacao' => ['O ano de publicação não pode ser maior que o ano atual']
+                ]
+            ]);
+    }
+
+    /**
+     * Testa validação do preço do livro
+     */
+    public function test_validacao_preco(): void
+    {
+        $livro = \App\Models\Livro::first();
+
+        // Preço vazio
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => ''
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Preco'])
+            ->assertJson([
+                'errors' => [
+                    'Preco' => ['O preço é obrigatório']
+                ]
+            ]);
+
+        // Preço não numérico
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => 'abc'
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Preco'])
+            ->assertJson([
+                'errors' => [
+                    'Preco' => ['O preço deve ser um número']
+                ]
+            ]);
+
+        // Preço com mais de 2 casas decimais
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => 10.999
+        ]);
+
+        $response->assertStatus(400)
+            ->assertJsonValidationErrors(['Preco'])
+            ->assertJson([
+                'errors' => [
+                    'Preco' => ['O preço não pode ter mais que 2 casas decimais']
+                ]
+            ]);
+
+        // Preço negativo
+        $response = $this->put("/api/livros/{$livro->CodL}", [
+            'Titulo' => $livro->Titulo,
+            'Editora' => $livro->Editora,
+            'Edicao' => $livro->Edicao,
+            'AnoPublicacao' => $livro->AnoPublicacao,
+            'Preco' => -1
+        ]);
+
+        $response->assertStatus(400)    
+            ->assertJsonValidationErrors(['Preco'])
+            ->assertJson([
+                'errors' => [
+                    'Preco' => ['O preço deve ser maior ou igual a zero']
+                ]
+            ]);
+    }
 } 
