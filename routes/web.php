@@ -19,6 +19,21 @@ Route::get('/livros/cadastro/{id?}', [LivroController::class, 'cadastro'])->name
 Route::get('/autores/cadastro/{id?}', [AutorController::class, 'cadastro'])->name('autores.cadastro');
 Route::get('/assuntos/cadastro/{id?}', [AssuntoController::class, 'cadastro'])->name('assuntos.cadastro');
 
-Route::get('/relatorios', function () {
-    return view('relatorios');
-})->name('relatorios');
+// Relatórios
+Route::prefix('relatorios')->group(function () {
+    Route::get('/', function () {
+        return view('relatorios');
+    })->name('relatorios');
+
+    Route::get('/livros', function () {
+        return view('relatorios.livros');
+    })->name('relatorios.livros');
+
+    Route::get('/assuntos', function () {
+        return view('relatorios.assuntos');
+    })->name('relatorios.assuntos');
+
+    Route::get('/autores', function () {
+        return view('relatorios.autores');
+    })->name('relatorios.autores');
+});

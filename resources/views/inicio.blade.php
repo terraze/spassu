@@ -21,7 +21,7 @@
                     <h5 class="card-title">Livros</h5>
                     <p class="card-text">Gerencie o cadastro de livros</p>
                     <a href="{{ route('livros.index') }}" class="btn btn-primary">
-                        <i class="bi bi-book"></i> Acessar
+                        Acessar
                     </a>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <h5 class="card-title">Autores</h5>
                     <p class="card-text">Gerencie o cadastro de autores</p>
                     <a href="{{ route('autores.index') }}" class="btn btn-primary">
-                        <i class="bi bi-person"></i> Acessar
+                        Acessar
                     </a>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <h5 class="card-title">Assuntos</h5>
                     <p class="card-text">Gerencie o cadastro de assuntos</p>
                     <a href="{{ route('assuntos.index') }}" class="btn btn-primary">
-                        <i class="bi bi-tag"></i> Acessar
+                        Acessar
                     </a>
                 </div>
             </div>
