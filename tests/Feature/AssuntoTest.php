@@ -122,5 +122,63 @@ class AssuntoTest extends TestCase
         $response->assertJson([
             'message' => 'Assunto não encontrado'
         ]);
-    }    
+    }
+
+    /**
+     * Testa se um assunto é criado com sucesso
+     */
+    public function test_assunto_criado_com_sucesso(): void
+    {
+        $response = $this->post('/api/assuntos', [
+            'Descricao' => 'Novo Assunto'
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJson([
+            'message' => 'Assunto criado com sucesso'
+        ]);
+
+        $this->assertDatabaseHas('Assunto', [
+            'Descricao' => 'Novo Assunto'
+        ]);
+    }
+
+    /**
+     * Testa se um assunto é atualizado com sucesso
+     */
+    public function test_assunto_atualizado_com_sucesso(): void
+    {
+        // Busca o primeiro assunto
+        $assunto = \App\Models\Assunto::first();
+        $codAs = $assunto->CodAs;
+        $descricaoOriginal = $assunto->Descricao;
+        
+        // Tenta atualizar o assunto
+        $response = $this->put("/api/assuntos/{$codAs}", [
+            'Descricao' => 'Assunto Atualizado'
+        ]);
+
+        // Verifica se a resposta foi bem sucedida
+        $response->assertStatus(200);
+        $response->assertJson([
+            'message' => 'Assunto atualizado com sucesso'
+        ]);
+
+        // Verifica se o registro foi atualizado no banco de dados
+        $this->assertDatabaseHas('Assunto', [
+            'CodAs' => $codAs,
+            'Descricao' => 'Assunto Atualizado'
+        ]);        
+    }
+
+    /**
+     * Testa se retorna erro ao tentar criar assunto sem descrição
+     */
+    public function test_erro_ao_criar_assunto_sem_descricao(): void
+    {
+        $response = $this->post('/api/assuntos', []);
+
+        $response->assertStatus(400);
+        $response->assertJsonValidationErrors(['Descricao']);
+    }
 }

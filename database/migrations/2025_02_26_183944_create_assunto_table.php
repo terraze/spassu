@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('Assunto', function (Blueprint $table) {
             $table->increments('CodAs');
-            $table->string('Descricao', 20);
+            $table->string('Descricao', Assunto::MAX_DESCRICAO_LENGTH);
         });
     }
 

@@ -14,7 +14,7 @@ Route::get('/livros', [LivroController::class, 'index'])->name('livros.index');
 Route::get('/autores', [AutorController::class, 'index'])->name('autores.index');
 Route::get('/assuntos', [AssuntoController::class, 'index'])->name('assuntos.index');
 
-// Cadastro de dados (edição, criação, remoção)
-Route::get('/livros/cadastro', [LivroController::class, 'cadastro'])->name('livros.cadastro');
-Route::get('/autores/cadastro', [AutorController::class, 'cadastro'])->name('autores.cadastro');
-Route::get('/assuntos/cadastro', [AssuntoController::class, 'cadastro'])->name('assuntos.cadastro');
+// Cadastro de dados (edição e criação)
+Route::get('/livros/cadastro/{id?}', [LivroController::class, 'cadastro'])->name('livros.cadastro');
+Route::get('/autores/cadastro/{id?}', [AutorController::class, 'cadastro'])->name('autores.cadastro');
+Route::get('/assuntos/cadastro/{id?}', [AssuntoController::class, 'cadastro'])->name('assuntos.cadastro');

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class Assunto extends Model
 {
+    public const MAX_DESCRICAO_LENGTH = 20;
+
     /**
      * Define o nome da tabela associada ao modelo     
      * @var string

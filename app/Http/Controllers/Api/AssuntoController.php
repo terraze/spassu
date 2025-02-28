@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ListaAssuntoRequest;
+use App\Http\Requests\Api\SalvarAssuntoRequest;
 use App\Models\Assunto;
 use Illuminate\Support\Facades\DB;
 
@@ -59,6 +60,53 @@ class AssuntoController extends Controller
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir assunto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Cria um novo assunto
+     */
+    public function store(SalvarAssuntoRequest $request)
+    {
+        try {
+            $assunto = Assunto::create($request->validated());
+            
+            return response()->json([
+                'message' => 'Assunto criado com sucesso',
+                'data' => $assunto
+            ], 201);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao criar assunto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Atualiza um assunto existente
+     */
+    public function update(SalvarAssuntoRequest $request, $id)
+    {
+        try {
+            $assunto = Assunto::findOrFail($id);
+            $assunto->update($request->validated());
+            
+            return response()->json([
+                'message' => 'Assunto atualizado com sucesso',
+                'data' => $assunto
+            ]);
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Assunto não encontrado'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar assunto',
                 'error' => $e->getMessage()
             ], 500);
         }
