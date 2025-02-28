@@ -24,7 +24,7 @@ class LivroTest extends TestCase
         $response = $this->get('/api/livros');
         $response->assertStatus(200);
 
-        $response->assertJsonCount(3);
+        $response->assertJsonCount(8);
         $response->assertJsonStructure([
             '*' => [
                 'CodL',
