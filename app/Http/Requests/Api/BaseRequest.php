@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BaseRequest extends FormRequest
+abstract class BaseRequest extends FormRequest
 {
     /**
      * Não requer login

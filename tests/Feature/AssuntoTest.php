@@ -2,13 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Assunto;
-use App\Models\Livro;
-use App\Models\Livro_Assunto;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Database\Seeders\AssuntoSeeder;
-use Database\Seeders\LivroSeeder;
-use Database\Seeders\LivroAssuntoSeeder;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 
