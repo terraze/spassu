@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 
-class ViewLivroReportTest extends TestCase
+class RelatorioLivrosTest extends TestCase
 {
     use DatabaseMigrations;
 
