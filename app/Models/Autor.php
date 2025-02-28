@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
 class Autor extends Model
 {
@@ -53,5 +54,25 @@ class Autor extends Model
     {
         return $this->belongsToMany(Livro::class, 'Livro_Autor', 'Autor_CodAu', 'Livro_CodL')
                     ->using(Livro_Autor::class);
+    }
+
+    /**
+     * Verifica se o assunto está sendo usado em algum livro
+     */
+    public function estaEmUso()
+    {
+        return DB::table('Livro_Autor')
+            ->where('CodAu', $this->CodAu)
+            ->exists();
+    }
+
+    /**
+     * Remove todas as associações deste assunto com livros
+     */
+    public function removerAssociacoesLivros()
+    {
+        return DB::table('Livro_Autor')
+            ->where('CodAu', $this->CodAu)
+            ->delete();
     }
 }
