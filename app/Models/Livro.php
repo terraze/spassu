@@ -46,7 +46,8 @@ class Livro extends Model
         'Titulo',
         'Editora',
         'Edicao',
-        'AnoPublicacao',        
+        'AnoPublicacao',
+        'Preco'
     ];
 
     /**

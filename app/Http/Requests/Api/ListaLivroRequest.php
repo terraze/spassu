@@ -9,6 +9,6 @@ class ListaLivroRequest extends ListaRequest
      */
     protected function getSortFields(): array
     {
-        return ['CodL', 'Titulo', 'AnoPublicacao', 'Editora', 'Edicao'];
+        return ['CodL', 'Titulo', 'AnoPublicacao', 'Editora', 'Edicao', 'Preco'];
     }
 } 

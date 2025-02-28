@@ -16,6 +16,7 @@
         ['label' => 'Editora', 'field' => 'Editora'],
         ['label' => 'Edição', 'field' => 'Edicao'],
         ['label' => 'Ano', 'field' => 'AnoPublicacao'],
+        ['label' => 'Preço', 'field' => 'Preco'],
         ['label' => 'Ações', 'field' => null]
     ]
 ])
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${livro.Editora}</td>
                     <td>${livro.Edicao}</td>
                     <td>${livro.AnoPublicacao}</td>
+                    <td>R$ ${Number(livro.Preco).toFixed(2)}</td>
                     <td>
                         <button class="btn btn-sm btn-primary" onclick="editarLivro(${livro.CodL})">
                             <i class="bi bi-pencil"></i>

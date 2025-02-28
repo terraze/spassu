@@ -31,7 +31,8 @@ class LivroTest extends TestCase
                 'Titulo',
                 'AnoPublicacao',
                 'Editora',
-                'Edicao'
+                'Edicao',
+                'Preco'
             ]
         ]);
     }    
@@ -144,6 +145,28 @@ class LivroTest extends TestCase
         $this->assertEquals('Editora Anual', $data[5]['Editora']); 
         $this->assertEquals('Editora Anual', $data[6]['Editora']); 
         $this->assertEquals('Editora Anual', $data[7]['Editora']); 
+    }
+
+    /**
+     * Testa se os livros são ordenados por preço crescente
+     */
+    public function test_livros_ordenados_por_preco_crescente(): void
+    {
+        $response = $this->get('/api/livros?ordenarCampo=Preco&ordenarDirecao=asc');
+        $response->assertStatus(200);
+
+        $response->assertJsonCount(8);
+        
+        $data = $response->json();
+        
+        $this->assertEquals(40.00, $data[0]['Preco']);
+        $this->assertEquals(100.00, $data[1]['Preco']);
+        $this->assertEquals(110.00, $data[2]['Preco']);
+        $this->assertEquals(120.00, $data[3]['Preco']);
+        $this->assertEquals(145.00, $data[4]['Preco']); 
+        $this->assertEquals(150.00, $data[5]['Preco']); 
+        $this->assertEquals(150.00, $data[6]['Preco']); 
+        $this->assertEquals(300.00, $data[7]['Preco']); 
     }
 
     /**
