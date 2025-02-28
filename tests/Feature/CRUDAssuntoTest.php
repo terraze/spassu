@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+use App\Models\Assunto;
 
 class CRUDAssuntoTest extends TestCase
 {
@@ -151,7 +152,6 @@ class CRUDAssuntoTest extends TestCase
         // Busca o primeiro assunto
         $assunto = \App\Models\Assunto::first();
         $codAs = $assunto->CodAs;
-        $descricaoOriginal = $assunto->Descricao;
         
         // Tenta atualizar o assunto
         $response = $this->put("/api/assuntos/{$codAs}", [
@@ -172,6 +172,21 @@ class CRUDAssuntoTest extends TestCase
     }
 
     /**
+     * Testa se retorna erro ao tentar atualizar assunto inexistente
+     */
+    public function test_404_ao_atualizar_assunto_inexistente(): void
+    {
+        $response = $this->put('/api/assuntos/999', [
+            'Descricao' => 'Assunto Inexistente'
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'message' => 'Assunto não encontrado'
+        ]);
+    }
+
+    /**
      * Testa se retorna erro ao tentar criar assunto sem descrição
      */
     public function test_erro_ao_criar_assunto_sem_descricao(): void
@@ -180,5 +195,25 @@ class CRUDAssuntoTest extends TestCase
 
         $response->assertStatus(400);
         $response->assertJsonValidationErrors(['Descricao']);
+    }
+
+    /**
+     * Testa se retorna erro ao tentar criar assunto com descrição muito longa
+     */
+    public function test_erro_ao_criar_assunto_com_descricao_muito_longa(): void
+    {
+        $descricaoGrande = str_repeat('a', Assunto::MAX_DESCRICAO_LENGTH + 1);
+        
+        $response = $this->post('/api/assuntos', [
+            'Descricao' => $descricaoGrande
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertJsonValidationErrors(['Descricao']);
+        $response->assertJson([
+            'errors' => [
+                'Descricao' => ['A descrição não pode ter mais que ' . Assunto::MAX_DESCRICAO_LENGTH . ' caracteres']
+            ]
+        ]);
     }
 }
