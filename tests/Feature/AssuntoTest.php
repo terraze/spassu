@@ -48,10 +48,8 @@ class AssuntoTest extends TestCase
 
         $response->assertJsonCount(3);
         
-        // Get the response data
         $data = $response->json();
         
-        // Assert the order is correct regardless of IDs
         $this->assertEquals('Economia', $data[0]['Descricao']);
         $this->assertEquals('Saúde', $data[1]['Descricao']);
         $this->assertEquals('Tecnologia', $data[2]['Descricao']);

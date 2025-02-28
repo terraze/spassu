@@ -30,6 +30,7 @@
         <!-- Footer -->
         @include('components.footer')
         @include('components.toast')
+        @include('components.loading-overlay')
 
         @stack('scripts')
     </body>
