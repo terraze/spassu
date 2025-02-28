@@ -12,6 +12,8 @@ class AutorController extends Controller
 {
     /**
      * Retorna todos os autores
+     * @param ListaAutorRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(ListaAutorRequest $request)
     {    
@@ -27,6 +29,8 @@ class AutorController extends Controller
 
     /**
      * Remove o autor especificado
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -66,6 +70,8 @@ class AutorController extends Controller
 
     /**
      * Cria um novo autor
+     * @param SalvarAutorRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(SalvarAutorRequest $request)
     {
@@ -87,6 +93,9 @@ class AutorController extends Controller
 
     /**
      * Atualiza um autor existente
+     * @param SalvarAutorRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(SalvarAutorRequest $request, $id)
     {

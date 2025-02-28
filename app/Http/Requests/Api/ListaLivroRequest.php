@@ -6,6 +6,7 @@ class ListaLivroRequest extends ListaRequest
 {
     /**
      * Lista de campos disponíveis para ordenação
+     * @return array
      */
     protected function getSortFields(): array
     {

@@ -7,6 +7,11 @@ use App\Models\Assunto;
 
 class SalvarAssuntoRequest extends BaseRequest
 {
+    /**
+     * Regras de validação para a requisição
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
     public function rules(): array
     {
         return [
@@ -14,6 +19,11 @@ class SalvarAssuntoRequest extends BaseRequest
         ];
     }
 
+    /**
+     * Mensagens de erro para as regras de validação
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

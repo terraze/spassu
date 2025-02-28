@@ -13,6 +13,8 @@ class AssuntoController extends Controller
     
     /**
      * Retorna todos os assuntos
+     * @param ListaAssuntoRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(ListaAssuntoRequest $request)
     {    
@@ -28,6 +30,8 @@ class AssuntoController extends Controller
 
     /**
      * Remove o assunto especificado
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -67,6 +71,8 @@ class AssuntoController extends Controller
 
     /**
      * Cria um novo assunto
+     * @param SalvarAssuntoRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(SalvarAssuntoRequest $request)
     {
@@ -88,6 +94,9 @@ class AssuntoController extends Controller
 
     /**
      * Atualiza um assunto existente
+     * @param SalvarAssuntoRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(SalvarAssuntoRequest $request, $id)
     {

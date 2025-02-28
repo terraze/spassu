@@ -19,6 +19,8 @@ abstract class ListaRequest extends BaseRequest
 
     /**
      * Mensagens de erro para as regras de validação
+     *
+     * @return array<string, string>
      */
     public function messages(): array
     {
@@ -28,8 +30,18 @@ abstract class ListaRequest extends BaseRequest
         ];
     }
 
+    /**
+     * Campos disponíveis para ordenação
+     *
+     * @return array
+     */
     abstract protected function getSortFields(): array;
 
+    /**
+     * Direções disponíveis para ordenação
+     *
+     * @return array
+     */
     protected function getSortDirections(): array
     {
         return ['asc', 'desc'];

@@ -12,6 +12,8 @@ class LivroController extends Controller
 {
     /**
      * Retorna todos os livros
+     * @param ListaLivroRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(ListaLivroRequest $request)
     {    
@@ -27,6 +29,8 @@ class LivroController extends Controller
 
     /**
      * Cria um novo livro
+     * @param SalvarLivroRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(SalvarLivroRequest $request)
     {
@@ -65,6 +69,9 @@ class LivroController extends Controller
 
     /**
      * Atualiza um livro existente
+     * @param SalvarLivroRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(SalvarLivroRequest $request, $id)
     {
@@ -109,6 +116,8 @@ class LivroController extends Controller
 
     /**
      * Remove o livro especificado
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {

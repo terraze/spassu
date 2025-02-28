@@ -9,6 +9,7 @@ class AssuntoController extends Controller
 {
     /**
      * Página de lista de assuntos
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -17,6 +18,8 @@ class AssuntoController extends Controller
 
     /**
      * Página de cadastro de assunto
+     * @param int|null $id
+     * @return \Illuminate\View\View
      */
     public function cadastro($id = null)
     {

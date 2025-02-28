@@ -60,6 +60,7 @@ class Assunto extends Model
 
     /**
      * Verifica se o assunto está sendo usado em algum livro
+     * @return bool
      */
     public function estaEmUso()
     {
@@ -70,6 +71,7 @@ class Assunto extends Model
 
     /**
      * Remove todas as associações deste assunto com livros
+     * @return int
      */
     public function removerAssociacoesLivros()
     {

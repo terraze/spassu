@@ -16,6 +16,10 @@ class Livro extends Model
     
     protected static $maxAnoPublicacao;
 
+    /**
+     * Retorna o ano máximo de publicação
+     * @return int
+     */
     public static function getMaxAnoPublicacao()
     {
         return date('Y');

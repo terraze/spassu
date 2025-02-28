@@ -10,6 +10,7 @@ abstract class BaseRequest extends FormRequest
 {
     /**
      * Não requer login
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -18,6 +19,7 @@ abstract class BaseRequest extends FormRequest
 
     /**
      * Tratamento de erro de validação
+     * @param Validator $validator
      */
     protected function failedValidation(Validator $validator)
     {

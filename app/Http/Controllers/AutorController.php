@@ -8,6 +8,7 @@ class AutorController extends Controller
 {
     /**
      * Página de lista de autores
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -16,6 +17,8 @@ class AutorController extends Controller
 
     /**
      * Página de cadastro de autor
+     * @param int|null $id
+     * @return \Illuminate\View\View
      */
     public function cadastro($id = null)
     {
