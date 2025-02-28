@@ -19,4 +19,15 @@ class RelatorioController extends Controller
         
         return response()->json($livros);
     }
+
+    /**
+     * Retorna os dados do relatório de assuntos
+     * 
+     * @return JsonResponse
+     */
+    public function assuntos(): JsonResponse
+    {
+        $assuntos = DB::table('assunto_report_view')->get();
+        return response()->json($assuntos);
+    }
 } 

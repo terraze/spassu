@@ -41,7 +41,12 @@ class RelatorioController extends Controller
      */
     public function assuntos(): View
     {
-        return view('relatorios.assuntos');
+        $assuntos = DB::table('assunto_report_view')->get();
+        
+        $rawSql = DB::select("SHOW CREATE VIEW assunto_report_view")[0]->{'Create View'};
+        $viewDefinition = SqlFormatter::format($rawSql);
+        
+        return view('relatorios.assuntos', compact('assuntos', 'viewDefinition'));
     }
 
     /**

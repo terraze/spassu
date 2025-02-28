@@ -37,3 +37,4 @@ Route::delete('/assuntos/{id}', [AssuntoController::class, 'destroy']);
 
 // Relatórios
 Route::get('/relatorios/livros', [RelatorioController::class, 'livros'])->name('api.relatorios.livros');
+Route::get('/relatorios/assuntos', [RelatorioController::class, 'assuntos'])->name('api.relatorios.assuntos');
