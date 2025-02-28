@@ -5,6 +5,7 @@ class FormHandler {
         this.idField = config.idField;
         this.successRedirect = config.successRedirect;
         this.form = document.getElementById(this.formId);
+        this.multiSelectFields = ['Autores', 'Assuntos'];
         
         this.setupFormSubmit();
     }
@@ -14,7 +15,26 @@ class FormHandler {
             e.preventDefault();
             
             const formData = new FormData(this.form);
-            const data = Object.fromEntries(formData);
+            const data = {};
+            
+            // Initialize empty arrays for multi-select fields
+            this.multiSelectFields.forEach(field => {
+                data[field] = [];
+            });
+            
+            // Handle both single values and arrays
+            for (let [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    // Remove [] from key name
+                    const arrayKey = key.slice(0, -2);
+                    if (!data[arrayKey]) {
+                        data[arrayKey] = [];
+                    }
+                    data[arrayKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
             
             LoadingOverlay.show();
             

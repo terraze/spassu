@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\DB;
 
 class Livro extends Model
 {
+    const MAX_TITULO_LENGTH = 100;
+    const MAX_EDITORA_LENGTH = 50;
+    const MIN_EDICAO = 1;
+    const MIN_ANO_PUBLICACAO = 1900;
+    const MIN_PRECO = 0;
+    
+    protected static $maxAnoPublicacao;
+
+    public static function getMaxAnoPublicacao()
+    {
+        return date('Y');
+    }
+    
      /**
      * Define o nome da tabela associada ao modelo     
      * @var string
@@ -56,7 +69,7 @@ class Livro extends Model
      */
     public function assuntos(): BelongsToMany
     {
-        return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'Livro_CodL', 'Assunto_CodAs')
+        return $this->belongsToMany(Assunto::class, 'Livro_Assunto', 'CodL', 'CodAs')
                     ->using(Livro_Assunto::class);
     }
 
@@ -68,7 +81,7 @@ class Livro extends Model
      */
     public function autores(): BelongsToMany
     {
-        return $this->belongsToMany(Autor::class, 'Livro_Autor', 'Livro_CodL', 'Autor_CodAu')
+        return $this->belongsToMany(Autor::class, 'Livro_Autor', 'CodL', 'CodAu')
                     ->using(Livro_Autor::class);
     }
 
