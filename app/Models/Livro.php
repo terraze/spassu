@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class Livro extends Model
 {
-    const MAX_TITULO_LENGTH = 100;
-    const MAX_EDITORA_LENGTH = 50;
+    const MAX_TITULO_LENGTH = 40;
+    const MAX_EDITORA_LENGTH = 40;
     const MIN_EDICAO = 1;
     const MIN_ANO_PUBLICACAO = 1900;
     const MIN_PRECO = 0;
