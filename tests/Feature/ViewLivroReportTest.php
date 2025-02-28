@@ -67,5 +67,19 @@ class ViewLivroReportTest extends TestCase
             'Um livro qualquer'
         ];
         $this->assertEquals($titulosOrdenados, $titulos);
+
+        // Testa se o endpoint da API retorna os mesmos dados da view
+        $response = $this->getJson(route('api.relatorios.livros'));
+        
+        $response->assertStatus(200)
+                 ->assertJsonCount(6)
+                 ->assertJson($results->toArray());
+        
+        // Testa se a página web carrega
+        $response = $this->get(route('relatorios.livros'));
+        $response->assertStatus(200)
+                 ->assertViewHas('livros')
+                 ->assertSee('Todo ano tem um')
+                 ->assertSee('Livro de Saúde e Tecnologia');
     }
 }
