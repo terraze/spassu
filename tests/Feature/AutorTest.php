@@ -48,8 +48,8 @@ class AutorTest extends TestCase
         
         $data = $response->json();
         
-        $this->assertEquals('Médico', $data[0]['Nome']);
-        $this->assertEquals('Economista', $data[1]['Nome']);
+        $this->assertEquals('Economista', $data[0]['Nome']);
+        $this->assertEquals('Médico', $data[1]['Nome']);
         $this->assertEquals('Programador', $data[2]['Nome']);
     }
 
