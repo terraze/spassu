@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LivroController;
 use App\Http\Controllers\AutorController;
 use App\Http\Controllers\AssuntoController;
+use App\Http\Controllers\RelatorioController;
 
 Route::get('/', function () {
     return view('inicio');
@@ -21,19 +22,8 @@ Route::get('/assuntos/cadastro/{id?}', [AssuntoController::class, 'cadastro'])->
 
 // Relatórios
 Route::prefix('relatorios')->group(function () {
-    Route::get('/', function () {
-        return view('relatorios');
-    })->name('relatorios');
-
-    Route::get('/livros', function () {
-        return view('relatorios.livros');
-    })->name('relatorios.livros');
-
-    Route::get('/assuntos', function () {
-        return view('relatorios.assuntos');
-    })->name('relatorios.assuntos');
-
-    Route::get('/autores', function () {
-        return view('relatorios.autores');
-    })->name('relatorios.autores');
+    Route::get('/', [RelatorioController::class, 'index'])->name('relatorios');
+    Route::get('/livros', [RelatorioController::class, 'livros'])->name('relatorios.livros');
+    Route::get('/assuntos', [RelatorioController::class, 'assuntos'])->name('relatorios.assuntos');
+    Route::get('/autores', [RelatorioController::class, 'autores'])->name('relatorios.autores');
 });

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\LivroController;
 use App\Http\Controllers\Api\AutorController;
 use App\Http\Controllers\Api\AssuntoController;
+use App\Http\Controllers\Api\RelatorioController;
 
 // Status da API
 Route::get('/status', [StatusController::class, 'index']);
@@ -33,3 +34,6 @@ Route::put('/assuntos/{id}', [AssuntoController::class, 'update']);
 Route::delete('/livros/{id}', [LivroController::class, 'destroy']);
 Route::delete('/autores/{id}', [AutorController::class, 'destroy']);
 Route::delete('/assuntos/{id}', [AssuntoController::class, 'destroy']);
+
+// Relatórios
+Route::get('/relatorios/livros', [RelatorioController::class, 'livros'])->name('api.relatorios.livros');
