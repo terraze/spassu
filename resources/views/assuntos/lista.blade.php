@@ -21,8 +21,10 @@
 @push('scripts')
 <script src="{{ asset('js/data-table.js') }}"></script>
 <script>
+let dataTable;
+
 document.addEventListener('DOMContentLoaded', function() {
-    const table = new DataTable('assuntos-table', {
+    dataTable = new DataTable('assuntos-table', {
         apiUrl: '/api/assuntos',
         sortField: 'CodAs',
         rowTemplate: (assunto) => {
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="btn btn-sm btn-primary" onclick="editarAssunto(${assunto.CodAs})">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="excluirAssunto(${assunto.CodAs})">
+                        <button class="btn btn-sm btn-danger" onclick="excluirAssunto(${assunto.CodAs}, '${assunto.Descricao}')">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>
@@ -48,18 +50,26 @@ function editarAssunto(id) {
     window.location.href = `/assuntos/cadastro/${id}`;
 }
 
-function excluirAssunto(id) {
-    if (confirm('Tem certeza que deseja excluir este assunto?')) {
+function excluirAssunto(id, descricao) {
+    if (confirm(`Tem certeza que deseja excluir o assunto "${descricao}"?`)) {
         axios.delete(`/api/assuntos/${id}`)
             .then(response => {
                 if (response.status === 200) {
                     Toast.show('Assunto excluído com sucesso!', 'success');
-                    location.reload();
+                    dataTable.loadData();
                 }
             })
             .catch(error => {
                 console.error('Erro ao excluir assunto:', error);
-                Toast.show('Erro ao excluir o assunto.', 'error');
+                let mensagem = 'Erro ao excluir o assunto.';
+                
+                if (error.response?.status === 404) {
+                    mensagem = 'Assunto não encontrado.';
+                } else if (error.response?.data?.message) {
+                    mensagem = error.response.data.message;
+                }
+                
+                Toast.show(mensagem, 'error');
             });
     }
 }

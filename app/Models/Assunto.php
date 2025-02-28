@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
 class Assunto extends Model
 {
@@ -54,5 +54,25 @@ class Assunto extends Model
     {
         return $this->belongsToMany(Livro::class, 'Livro_Assunto', 'Assunto_codAs', 'Livro_CodI')
                     ->using(Livro_Assunto::class);
+    }
+
+    /**
+     * Verifica se o assunto está sendo usado em algum livro
+     */
+    public function estaEmUso()
+    {
+        return DB::table('Livro_Assunto')
+            ->where('CodAs', $this->CodAs)
+            ->exists();
+    }
+
+    /**
+     * Remove todas as associações deste assunto com livros
+     */
+    public function removerAssociacoesLivros()
+    {
+        return DB::table('Livro_Assunto')
+            ->where('CodAs', $this->CodAs)
+            ->delete();
     }
 }

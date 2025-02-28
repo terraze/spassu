@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ListaAssuntoRequest;
 use App\Models\Assunto;
+use Illuminate\Support\Facades\DB;
 
 class AssuntoController extends Controller
 {
@@ -22,5 +23,44 @@ class AssuntoController extends Controller
         $assuntos = Assunto::orderBy($sortField, $sortDirection)->get();
 
         return response()->json($assuntos);
+    }
+
+    /**
+     * Remove o assunto especificado
+     */
+    public function destroy($id)
+    {
+        try {
+            $assunto = Assunto::findOrFail($id);
+            
+            DB::beginTransaction();
+            try {
+                // Primeiro remove todas as associações
+                $assunto->removerAssociacoesLivros();
+                
+                // Depois remove o assunto
+                $assunto->delete();
+                
+                DB::commit();
+
+                return response()->json([
+                    'message' => 'Assunto excluído com sucesso'
+                ]);
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Assunto não encontrado'
+            ], 404);
+        } catch (\Exception $e) {            
+            return response()->json([
+                'message' => 'Erro ao excluir assunto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

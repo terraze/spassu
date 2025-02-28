@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\AssuntoSeeder;
 use Tests\TestCase;
-
+use Illuminate\Support\Facades\DB;
 class AssuntoTest extends TestCase
 {
 
@@ -35,8 +35,7 @@ class AssuntoTest extends TestCase
                 'Descricao'
             ]
         ]);
-    }
-    
+    }    
 
     /**
      * Testa se os assuntos são ordenados por descrição crescente
@@ -54,4 +53,57 @@ class AssuntoTest extends TestCase
         $this->assertEquals('Saúde', $data[1]['Descricao']);
         $this->assertEquals('Tecnologia', $data[2]['Descricao']);
     }
+
+    /**
+     * Testa se um assunto é excluído com sucesso junto com suas associações
+     */
+    public function test_assunto_excluido(): void
+    {    
+        // Busca um assunto que tenha associações com livros
+        $assunto = \App\Models\Assunto::query()
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                      ->from('Livro_Assunto')
+                      ->whereColumn('Livro_Assunto.CodAs', 'Assunto.CodAs');
+            })
+            ->first();
+
+        // Se não encontrou nenhum assunto com associações, cria um
+        if (!$assunto) {
+            $assunto = \App\Models\Assunto::first();
+            DB::table('Livro_Assunto')->insert([
+                'CodLi' => 1,
+                'CodAs' => $assunto->CodAs
+            ]);
+        }
+
+        $response = $this->delete("/api/assuntos/{$assunto->CodAs}");
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'message' => 'Assunto excluído com sucesso'
+        ]);
+
+        // Verifica se o assunto foi removido
+        $this->assertDatabaseMissing('Assunto', [
+            'CodAs' => $assunto->CodAs
+        ]);
+
+        // Verifica se as associações foram removidas
+        $this->assertDatabaseMissing('Livro_Assunto', [
+            'CodAs' => $assunto->CodAs
+        ]);
+    }
+
+    /**
+     * Testa se retorna erro ao tentar excluir assunto inexistente
+     */
+    public function test_404_ao_excluir_assunto_inexistente(): void
+    {
+        $response = $this->delete('/api/assuntos/999');
+        $response->assertStatus(404);
+        $response->assertJson([
+            'message' => 'Assunto não encontrado'
+        ]);
+    }    
 }
