@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\Autor;
 return new class extends Migration
 {
     /**
@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('Autor', function (Blueprint $table) {
             $table->increments('CodAu');
-            $table->string('Nome', 40);
+            $table->string('Nome', Autor::MAX_NOME_LENGTH);
         });
     }
 

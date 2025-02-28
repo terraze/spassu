@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class Autor extends Model
 {
+    public const MAX_NOME_LENGTH = 40;
+
     /**
      * Define o nome da tabela associada ao modelo     
      * @var string

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ListaAutorRequest;
+use App\Http\Requests\Api\SalvarAutorRequest;
 use App\Models\Autor;
 use Illuminate\Support\Facades\DB;
 
@@ -58,6 +59,53 @@ class AutorController extends Controller
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir autor',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Cria um novo autor
+     */
+    public function store(SalvarAutorRequest $request)
+    {
+        try {
+            $autor = Autor::create($request->validated());
+            
+            return response()->json([
+                'message' => 'Autor criado com sucesso',
+                'data' => $autor
+            ], 201);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao criar autor',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Atualiza um autor existente
+     */
+    public function update(SalvarAutorRequest $request, $id)
+    {
+        try {
+            $autor = Autor::findOrFail($id);
+            $autor->update($request->validated());
+            
+            return response()->json([
+                'message' => 'Autor atualizado com sucesso',
+                'data' => $autor
+            ]);
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Autor não encontrado'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar autor',
                 'error' => $e->getMessage()
             ], 500);
         }
