@@ -1,36 +1,52 @@
 @extends('app')
 
 @section('content')
-<div class="text-center">
-    <h1 class="display-4 mb-4">Bem-vindo à Biblioteca</h1>
-    
-    <div class="row mt-4">
+<div class="container">
+    <h1 class="mb-4">Sistema de Gerenciamento de Livros</h1>
+
+    <div class="alert alert-info mb-4">
+        <h4 class="alert-heading">Notas Importantes:</h4>
+        <ul class="mb-0">
+            <li>Por se tratar de formulários que enviam todos os campos, optei por usar o método PUT ao invés de PATCH nas atualizações via API</li>
+            <li>A associações de livros com autores e assuntos são feitas pelo cadastro de Livro</li>
+            <li>Deleções não ocorrem em cascata, mas sempre que um registro é removido o sistema remove suas associação antes, mantendo os dados das outras tabelas</li>
+            <li>Não há validações de duplicidade</li>
+        </ul>
+    </div>
+
+    <div class="row g-4">
         <div class="col-md-4">
-            <div class="card mb-4">
+            <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title h4 mb-3">Livros</h2>
-                    <p class="card-text mb-3">Explore nossa coleção de livros.</p>
-                    <a href="{{ route('livros.index') }}" class="btn btn-primary">Ver Livros</a>
+                    <h5 class="card-title">Livros</h5>
+                    <p class="card-text">Gerencie o cadastro de livros</p>
+                    <a href="{{ route('livros.index') }}" class="btn btn-primary">
+                        <i class="bi bi-book"></i> Acessar
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card mb-4">
+            <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title h4 mb-3">Autores</h2>
-                    <p class="card-text mb-3">Conheça nossos autores.</p>
-                    <a href="{{ route('autores.index') }}" class="btn btn-primary">Ver Autores</a>
+                    <h5 class="card-title">Autores</h5>
+                    <p class="card-text">Gerencie o cadastro de autores</p>
+                    <a href="{{ route('autores.index') }}" class="btn btn-primary">
+                        <i class="bi bi-person"></i> Acessar
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card mb-4">
+            <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title h4 mb-3">Assuntos</h2>
-                    <p class="card-text mb-3">Navegue por assuntos.</p>
-                    <a href="{{ route('assuntos.index') }}" class="btn btn-primary">Ver Assuntos</a>
+                    <h5 class="card-title">Assuntos</h5>
+                    <p class="card-text">Gerencie o cadastro de assuntos</p>
+                    <a href="{{ route('assuntos.index') }}" class="btn btn-primary">
+                        <i class="bi bi-tag"></i> Acessar
+                    </a>
                 </div>
             </div>
         </div>
