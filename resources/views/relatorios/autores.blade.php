@@ -39,13 +39,13 @@
                             <td>
                                 {{ $autor->TituloMaisCaro ?: '-' }}
                                 @if($autor->TituloMaisCaro)
-                                    <br><small class="text-muted">R$ {{ number_format((float)$autor->TituloMaisCaro, 2, ',', '.') }}</small>
+                                    <br><small class="text-muted">R$ {{ number_format((float)$autor->MaisCaro, 2, ',', '.') }}</small>
                                 @endif
                             </td>
                             <td>
                                 {{ $autor->TituloMaisBarato ?: '-' }}
                                 @if($autor->TituloMaisBarato)
-                                    <br><small class="text-muted">R$ {{ number_format((float)$autor->TituloMaisBarato, 2, ',', '.') }}</small>
+                                    <br><small class="text-muted">R$ {{ number_format((float)$autor->MaisBarato, 2, ',', '.') }}</small>
                                 @endif
                             </td>
                             <td>{{ $autor->TotalColaboradores }}</td>
