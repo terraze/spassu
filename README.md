@@ -28,11 +28,15 @@ cd spassu
 composer install
 
 # Iniciar o container do Docker
+./vendor/bin/sail build
 ./vendor/bin/sail up -d
 
 # Executar as migrações
-./vendor/bin/sail artisan migrate
-./vendor/bin/sail artisan db:seed
+./vendor/bin/sail artisan migrate --seed
+
+# Gerar a chave da aplicação
+./vendor/bin/sail artisan key:generate
+
 ```
 
 Pronto, basta acessar a aplicação no navegador:
