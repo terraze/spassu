@@ -44,9 +44,11 @@ class AssuntoController extends Controller
                 $assunto->removerAssociacoesLivros();
                 
                 // Depois remove o assunto
-                $assunto->delete();
+                $assunto->delete();                
                 
                 DB::commit();
+
+                $this->limparCache();
 
                 return response()->json([
                     'message' => 'Assunto excluído com sucesso'
@@ -78,6 +80,8 @@ class AssuntoController extends Controller
     {
         try {
             $assunto = Assunto::create($request->validated());
+
+            $this->limparCache();
             
             return response()->json([
                 'message' => 'Assunto criado com sucesso',
@@ -103,6 +107,8 @@ class AssuntoController extends Controller
         try {
             $assunto = Assunto::findOrFail($id);
             $assunto->update($request->validated());
+
+            $this->limparCache();
             
             return response()->json([
                 'message' => 'Assunto atualizado com sucesso',
@@ -119,5 +125,5 @@ class AssuntoController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
+    }    
 }

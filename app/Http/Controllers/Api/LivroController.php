@@ -59,6 +59,8 @@ class LivroController extends Controller
             }
 
             DB::commit();
+
+            $this->limparCache();
             
             return response()->json([
                 'message' => 'Livro criado com sucesso',
@@ -102,6 +104,8 @@ class LivroController extends Controller
             }
 
             DB::commit();
+
+            $this->limparCache();
             
             return response()->json([
                 'message' => 'Livro atualizado com sucesso',
@@ -142,6 +146,8 @@ class LivroController extends Controller
                 $livro->delete();
                 
                 DB::commit();
+
+                $this->limparCache();
 
                 return response()->json([
                     'message' => 'Livro excluído com sucesso'

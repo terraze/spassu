@@ -47,6 +47,8 @@ class AutorController extends Controller
                 
                 DB::commit();
 
+                $this->limparCache();
+
                 return response()->json([
                     'message' => 'Autor excluído com sucesso'
                 ]);
@@ -77,6 +79,8 @@ class AutorController extends Controller
     {
         try {
             $autor = Autor::create($request->validated());
+
+            $this->limparCache();
             
             return response()->json([
                 'message' => 'Autor criado com sucesso',
@@ -102,6 +106,8 @@ class AutorController extends Controller
         try {
             $autor = Autor::findOrFail($id);
             $autor->update($request->validated());
+
+            $this->limparCache();
             
             return response()->json([
                 'message' => 'Autor atualizado com sucesso',
