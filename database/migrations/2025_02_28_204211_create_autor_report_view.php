@@ -14,7 +14,7 @@ return new class extends Migration
         
         DB::statement("
             CREATE VIEW autor_report_view AS
-            
+
                 WITH PrecosLivros AS (
                     SELECT 
                         a.CodAu,
@@ -47,7 +47,10 @@ return new class extends Migration
                     (
                         SELECT COUNT(DISTINCT la.CodAu)
                         FROM Livro_Autor la
-                        WHERE la.CodAu = p.CodAu
+                        WHERE la.CodL IN (
+                            SELECT CodL FROM Livro_Autor WHERE CodAu = p.CodAu
+                        )
+                        AND la.CodAu != p.CodAu
                     ) as TotalColaboradores,
                     (
                         SELECT CONCAT(l.Titulo, ' (', l.AnoPublicacao, ')')
