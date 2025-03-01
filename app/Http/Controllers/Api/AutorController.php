@@ -17,14 +17,28 @@ class AutorController extends Controller
      */
     public function index(ListaAutorRequest $request)
     {    
+        try{
         // Obter parâmetros de ordenação ou usar valores padrão
-        $sortField = $request->input('ordenarCampo', 'CodAu');
-        $sortDirection = $request->input('ordenarDirecao', 'asc');
+            $sortField = $request->input('ordenarCampo', 'CodAu');
+            $sortDirection = $request->input('ordenarDirecao', 'asc');
 
-        // Obter dados ordenados
-        $autores = Autor::orderBy($sortField, $sortDirection)->get();
+            // Obter dados ordenados
+            $autores = Autor::orderBy($sortField, $sortDirection)->get();
 
-        return response()->json($autores);
+            return response()->json($autores);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao obter autores',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -62,6 +76,12 @@ class AutorController extends Controller
             return response()->json([
                 'message' => 'Autor não encontrado'
             ], 404);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir autor',
@@ -87,6 +107,12 @@ class AutorController extends Controller
                 'data' => $autor
             ], 201);
             
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao criar autor',
@@ -118,6 +144,12 @@ class AutorController extends Controller
             return response()->json([
                 'message' => 'Autor não encontrado'
             ], 404);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao atualizar autor',

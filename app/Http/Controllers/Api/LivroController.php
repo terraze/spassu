@@ -18,6 +18,7 @@ class LivroController extends Controller
      */
     public function index(ListaLivroRequest $request): JsonResponse
     {    
+        try{
         // Obter parâmetros de ordenação ou usar valores padrão
         $sortField = $request->input('ordenarCampo', 'CodL');
         $sortDirection = $request->input('ordenarDirecao', 'asc');
@@ -32,7 +33,20 @@ class LivroController extends Controller
                 return $livro;
             });
 
-        return response()->json($livros);
+            return response()->json($livros);
+            
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao obter livros',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -66,6 +80,13 @@ class LivroController extends Controller
                 'message' => 'Livro criado com sucesso',
                 'data' => $livro
             ], 201);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
             
         } catch (\Exception $e) {
             DB::rollBack();
@@ -117,6 +138,12 @@ class LivroController extends Controller
             return response()->json([
                 'message' => 'Livro não encontrado'
             ], 404);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([

@@ -18,14 +18,27 @@ class AssuntoController extends Controller
      */
     public function index(ListaAssuntoRequest $request)
     {    
-        // Obter parâmetros de ordenação ou usar valores padrão
-        $sortField = $request->input('ordenarCampo', 'CodAs');
-        $sortDirection = $request->input('ordenarDirecao', 'asc');
+        try{
+             // Obter parâmetros de ordenação ou usar valores padrão
+            $sortField = $request->input('ordenarCampo', 'CodAs');
+            $sortDirection = $request->input('ordenarDirecao', 'asc');
 
-        // Obter dados ordenados
-        $assuntos = Assunto::orderBy($sortField, $sortDirection)->get();
+            // Obter dados ordenados
+            $assuntos = Assunto::orderBy($sortField, $sortDirection)->get();
 
-        return response()->json($assuntos);
+            return response()->json($assuntos);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao obter assuntos',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -63,6 +76,12 @@ class AssuntoController extends Controller
             return response()->json([
                 'message' => 'Assunto não encontrado'
             ], 404);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir assunto',
@@ -87,7 +106,13 @@ class AssuntoController extends Controller
                 'message' => 'Assunto criado com sucesso',
                 'data' => $assunto
             ], 201);
-            
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao criar assunto',
@@ -119,6 +144,12 @@ class AssuntoController extends Controller
             return response()->json([
                 'message' => 'Assunto não encontrado'
             ], 404);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro interno do banco de dados',
+                'error' => 'Por favor, solicite suporte técnico'
+            ], 500);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao atualizar assunto',
