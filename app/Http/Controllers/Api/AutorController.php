@@ -36,7 +36,7 @@ class AutorController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao obter autores',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -85,7 +85,7 @@ class AutorController extends Controller
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir autor',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -116,7 +116,7 @@ class AutorController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao criar autor',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -153,7 +153,7 @@ class AutorController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao atualizar autor',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }

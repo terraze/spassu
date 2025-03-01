@@ -18,7 +18,7 @@ class StatusController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Erro ao obter status',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }

@@ -36,7 +36,7 @@ class AssuntoController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao obter assuntos',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -85,7 +85,7 @@ class AssuntoController extends Controller
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir assunto',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -116,7 +116,7 @@ class AssuntoController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao criar assunto',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -153,7 +153,7 @@ class AssuntoController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao atualizar assunto',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }    

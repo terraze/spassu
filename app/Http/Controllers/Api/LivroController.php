@@ -44,7 +44,7 @@ class LivroController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao obter livros',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -93,7 +93,7 @@ class LivroController extends Controller
             
             return response()->json([
                 'message' => 'Erro ao criar livro',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -148,7 +148,7 @@ class LivroController extends Controller
             DB::rollBack();
             return response()->json([
                 'message' => 'Erro ao atualizar livro',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -192,7 +192,7 @@ class LivroController extends Controller
         } catch (\Exception $e) {            
             return response()->json([
                 'message' => 'Erro ao excluir livro',
-                'error' => $e->getMessage()
+                'error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
