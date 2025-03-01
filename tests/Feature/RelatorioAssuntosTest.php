@@ -75,7 +75,7 @@ class RelatorioAssuntosTest extends TestCase
         
         $response->assertStatus(200)
                  ->assertJsonCount($results->count())
-                 ->assertJson($results->toArray());
+                 ->assertJson(json_decode(json_encode($results), true));
         
         // Testa se a página web carrega
         $response = $this->get(route('relatorios.assuntos'));
