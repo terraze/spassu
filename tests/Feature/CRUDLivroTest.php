@@ -701,7 +701,7 @@ class CRUDLivroTest extends TestCase
         // Verifica se ficou vazio
         $response = $this->getJson('/api/livros');
         $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
-        $this->assertEquals('-', $livroResponse['TodosAssuntos']);
+        $this->assertEquals('', $livroResponse['TodosAssuntos']);
     }
 
     /**
@@ -731,6 +731,6 @@ class CRUDLivroTest extends TestCase
         // Verifica se ficou vazio
         $response = $this->getJson('/api/livros');
         $livroResponse = collect($response->json())->firstWhere('Titulo', 'Um livro qualquer');
-        $this->assertEquals('-', $livroResponse['TodosAutores']);
+        $this->assertEquals('', $livroResponse['TodosAutores']);
     }
 } 

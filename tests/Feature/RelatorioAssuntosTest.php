@@ -27,14 +27,7 @@ class RelatorioAssuntosTest extends TestCase
         $this->assertEquals(6, $results->count());
 
         // Testa se os resultados estão ordenados por assunto e editora
-        $assuntosEditoras = $results->map(function($item) {
-            return [
-                'Assunto' => $item->Assunto,
-                'Editora' => $item->Editora,
-                'TotalLivros' => $item->TotalLivros,
-                'TotalEdicoes' => $item->TotalEdicoes
-            ];
-        })->toArray();
+        $assuntosEditoras = json_decode(json_encode($results), true);
 
         $esperado = [
             [
