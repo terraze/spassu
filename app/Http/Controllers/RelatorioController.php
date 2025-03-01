@@ -56,6 +56,11 @@ class RelatorioController extends Controller
      */
     public function autores(): View
     {
-        return view('relatorios.autores');
+        $autores = DB::table('autor_report_view')->get();
+        
+        $rawSql = DB::select("SHOW CREATE VIEW autor_report_view")[0]->{'Create View'};
+        $viewDefinition = SqlFormatter::format($rawSql);
+        
+        return view('relatorios.autores', compact('autores', 'viewDefinition'));
     }
 } 
