@@ -28,22 +28,10 @@ return new class extends Migration
                     LEFT JOIN Livro_Autor la ON a.CodAu = la.CodAu
                     LEFT JOIN Livro l ON la.CodL = l.CodL
                     LEFT JOIN Livro_Assunto las ON l.CodL = las.CodL
-                    GROUP BY a.CodAu,a.Nome
+                    GROUP BY a.CodAu, a.Nome
                 )
                 SELECT DISTINCT
                     p.*,
-                    (
-                        SELECT l.Titulo
-                        FROM Livro l
-                        WHERE l.Preco = p.MaisBarato
-                        LIMIT 1        
-                    ) as TituloMaisBarato,
-                    (
-                        SELECT l.Titulo
-                        FROM Livro l
-                        WHERE l.Preco = p.MaisCaro
-                        LIMIT 1
-                    ) as TituloMaisCaro,
                     (
                         SELECT COUNT(DISTINCT la.CodAu)
                         FROM Livro_Autor la
@@ -52,6 +40,20 @@ return new class extends Migration
                         )
                         AND la.CodAu != p.CodAu
                     ) as TotalColaboradores,
+                    (
+                        SELECT l.Titulo
+                        FROM Livro l
+                        JOIN Livro_Autor la ON l.CodL = la.CodL
+                        WHERE l.Preco = p.MaisBarato AND la.CodAu = p.CodAu
+                        LIMIT 1
+                    ) as TituloMaisBarato,
+                    (
+                        SELECT l.Titulo
+                        FROM Livro l
+                        JOIN Livro_Autor la ON l.CodL = la.CodL
+                        WHERE l.Preco = p.MaisCaro AND la.CodAu = p.CodAu
+                        LIMIT 1
+                    ) as TituloMaisCaro,
                     (
                         SELECT CONCAT(l.Titulo, ' (', l.AnoPublicacao, ')')
                         FROM Livro l
