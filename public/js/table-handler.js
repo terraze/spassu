@@ -49,7 +49,6 @@ class TableHandler {
                     }
                 })
                 .catch(error => {
-                    console.error(`Erro ao excluir ${this.resourceName}:`, error);
                     let mensagem = `Erro ao excluir ${this.resourceName}.`;
                     
                     if (error.response?.status === 404) {

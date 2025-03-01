@@ -51,9 +51,7 @@ class FormHandler {
                 Toast.show('Registro salvo com sucesso!', 'success');
                 window.location.href = this.successRedirect;
             })
-            .catch(error => {
-                console.error('Erro ao salvar:', error);
-                
+            .catch(error => {            
                 if (error.response?.status === 400) {
                     const errors = error.response.data.errors;
                     Object.keys(errors).forEach(field => {

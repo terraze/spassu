@@ -42,8 +42,9 @@ class DataTable {
                 this.renderData(response.data);
             }
         } catch (error) {
-            console.error('Erro ao carregar dados:', error);
-            Toast.show('Erro ao carregar os dados.', 'error');
+            const message = error.response?.data?.message || 'Erro ao carregar os dados';
+            const details = error.response?.data?.error;
+            Toast.show(`${message}${details ? ': ' + details : ''}`, 'error');
         }
     }
 
