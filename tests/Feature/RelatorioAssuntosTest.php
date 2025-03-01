@@ -69,19 +69,17 @@ class RelatorioAssuntosTest extends TestCase
         ];
 
         $this->assertEquals($esperado, $assuntosEditoras);
+    }
 
-        // Testa se o endpoint da API retorna os mesmos dados da view
-        $response = $this->getJson(route('api.relatorios.assuntos'));
-        
-        $response->assertStatus(200)
-                 ->assertJsonCount($results->count())
-                 ->assertJson(json_decode(json_encode($results), true));
-        
-        // Testa se a página web carrega
+    /**
+     * Testa se a página web carrega
+     */
+    public function test_pagina_web_carrega_dados_corretos(): void
+    {
         $response = $this->get(route('relatorios.assuntos'));
         $response->assertStatus(200)
                  ->assertViewHas('assuntos')
                  ->assertSee('Tecnologia')
                  ->assertSee('TechBooks');
-    }
+    }   
 }

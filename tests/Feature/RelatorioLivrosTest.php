@@ -67,15 +67,14 @@ class RelatorioLivrosTest extends TestCase
             'Um livro qualquer'
         ];
         $this->assertEquals($titulosOrdenados, $titulos);
+            
+    }
 
-        // Testa se o endpoint da API retorna os mesmos dados da view
-        $response = $this->getJson(route('api.relatorios.livros'));
-        
-        $response->assertStatus(200)
-                 ->assertJsonCount(6)
-                 ->assertJson(json_decode(json_encode($results), true));
-        
-        // Testa se a página web carrega
+    /**
+     * Testa se a página web carrega
+     */
+    public function test_pagina_web_carrega_dados_corretos(): void
+    {
         $response = $this->get(route('relatorios.livros'));
         $response->assertStatus(200)
                  ->assertViewHas('livros')

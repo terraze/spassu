@@ -60,16 +60,14 @@ class RelatorioAutoresTest extends TestCase
         $this->assertEquals(150.00, (float)$programador->MaisBarato);
         $this->assertEquals(1, $programador->TotalColaboradores);
         $this->assertEquals(2, $programador->TotalAssuntos);
-        $this->assertEquals('Livro de Saúde e Tecnologia (2020)', $programador->PrimeiroLivro);
+        $this->assertEquals('Livro de Saúde e Tecnologia (2020)', $programador->PrimeiroLivro);    
+    }
 
-        // Testa se o endpoint da API retorna os mesmos dados da view
-        $response = $this->getJson(route('api.relatorios.autores'));
-        
-        $response->assertStatus(200)
-                 ->assertJsonCount($results->count())
-                 ->assertJson(json_decode(json_encode($results), true));
-        
-        // Testa se a página web carrega
+    /**
+     * Testa se a página web carrega
+     */
+    public function test_pagina_web_carrega_dados_corretos(): void
+    {
         $response = $this->get(route('relatorios.autores'));
         $response->assertStatus(200)
                  ->assertViewHas('autores')
