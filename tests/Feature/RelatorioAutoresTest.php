@@ -30,9 +30,9 @@ class RelatorioAutoresTest extends TestCase
         $economista = $results->firstWhere('Nome', 'Economista');
         $this->assertEquals(2, $economista->TotalLivros);
         $this->assertEquals(120.00, (float)$economista->PrecoMedio);
-        $this->assertEquals('Todo ano tem um (2025)', $economista->TituloMaisBarato);
+        $this->assertEquals('Todo ano tem um', $economista->TituloMaisBarato);
         $this->assertEquals(100.00, (float)$economista->MaisBarato);
-        $this->assertEquals('Livro de Economia (2022)', $economista->TituloMaisCaro);
+        $this->assertEquals('Livro de Economia', $economista->TituloMaisCaro);
         $this->assertEquals(150.00, (float)$economista->MaisCaro);
         $this->assertEquals(0, $economista->TotalColaboradores);
         $this->assertEquals(1, $economista->TotalAssuntos);
@@ -42,9 +42,9 @@ class RelatorioAutoresTest extends TestCase
         $medico = $results->firstWhere('Nome', 'Médico');
         $this->assertEquals(3, $medico->TotalLivros);
         $this->assertEquals(165.00, (float)$medico->PrecoMedio);
-        $this->assertEquals('Livro de Saúde e Tecnologia (2020)', $medico->TituloMaisCaro);
+        $this->assertEquals('Livro de Saúde e Tecnologia', $medico->TituloMaisCaro);
         $this->assertEquals(300.00, (float)$medico->MaisCaro);
-        $this->assertEquals('Um livro qualquer (2025)', $medico->TituloMaisBarato);
+        $this->assertEquals('Um livro qualquer', $medico->TituloMaisBarato);
         $this->assertEquals(40.00, (float)$medico->MaisBarato);
         $this->assertEquals(1, $medico->TotalColaboradores);
         $this->assertEquals(2, $medico->TotalAssuntos);
@@ -54,9 +54,9 @@ class RelatorioAutoresTest extends TestCase
         $programador = $results->firstWhere('Nome', 'Programador');
         $this->assertEquals(2, $programador->TotalLivros);
         $this->assertEquals(250.00, (float)$programador->PrecoMedio);
-        $this->assertEquals('Livro de Saúde e Tecnologia (2020)', $programador->TituloMaisCaro);
+        $this->assertEquals('Livro de Saúde e Tecnologia', $programador->TituloMaisCaro);
         $this->assertEquals(300.00, (float)$programador->MaisCaro);
-        $this->assertEquals('Livro de Tecnologia (2025)', $programador->TituloMaisBarato);
+        $this->assertEquals('Livro de Tecnologia', $programador->TituloMaisBarato);
         $this->assertEquals(150.00, (float)$programador->MaisBarato);
         $this->assertEquals(1, $programador->TotalColaboradores);
         $this->assertEquals(2, $programador->TotalAssuntos);
