@@ -42,34 +42,7 @@ composer install
 Pronto, basta acessar a aplicação no navegador:
 
 ```bash
-http://localhost:8000
-```
-
-## Comandos utilizado para desenvolver o projeto (neste ordem)
-
-```bash
-# Inicialização do projeto
-composer global require laravel/installer
-laravel new spassu-php
-php artisan sail:install
-php artisan key:generate
-
-# Inicialização do repositório
-git init
-git add .
-git commit -m "Commit inicial"
-git remote add origin https://github.com/terraze/spassu.git
-git push -u origin master
-
-# Criação de models com inclusão automática de migrations (m), controllers (c), seeders (s) e pivot (p)
-./vendor/bin/sail artisan make:model Assunto -mcs
-./vendor/bin/sail artisan make:model Autor -mcs
-./vendor/bin/sail artisan make:model Livro -mcs
-./vendor/bin/sail artisan make:model Livro_Assunto -msp
-./vendor/bin/sail artisan make:model Livro_Autor -msp
-
-# Após criar as migrações e seeders
-./vendor/bin/sail artisan migrate -seed
+http://localhost
 ```
 
 ## Alterações realizados no SQL
