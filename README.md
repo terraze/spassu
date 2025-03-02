@@ -24,6 +24,9 @@ git clone https://github.com/terraze/spassu.git
 # Acessar o diretório do projeto
 cd spassu
 
+# Copiar .env
+cp .env.example .env
+
 # Instalar as dependências
 composer install
 
